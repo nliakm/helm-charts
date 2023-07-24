@@ -1,0 +1,34 @@
+{{- if and (eq .Values.recipes.pvc.media.existingPvcName "") (.Values.recipes.pvc.enabled) }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Release.Name }}-media-pvc
+  namespace: {{ .Values.metadata.namespace }}
+  labels:
+    {{- include "recipes.labels" . | nindent 4 }}
+spec:
+  accessModes:
+    - {{ .Values.recipes.pvc.media.accessMode }}
+  resources:
+    requests:
+      storage: {{ .Values.recipes.pvc.media.storageSize }}
+  storageClassName: {{ .Values.recipes.pvc.media.storageClass }}
+{{- end }}
+{{- if and (eq .Values.recipes.pvc.static.existingPvcName "") (.Values.recipes.pvc.enabled) }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Release.Name }}-static-pvc
+  namespace: {{ .Values.metadata.namespace }}
+  labels:
+    {{- include "recipes.labels" . | nindent 4 }}
+spec:
+  accessModes:
+    - {{ .Values.recipes.pvc.static.accessMode }}
+  resources:
+    requests:
+      storage: {{ .Values.recipes.pvc.static.storageSize }}
+  storageClassName: {{ .Values.recipes.pvc.static.storageClass }}
+{{- end }}

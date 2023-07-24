@@ -1,0 +1,51 @@
+{{- if .Values.recipes.ingress.enabled }}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}-ingress
+  namespace: {{ .Values.metadata.namespace }}
+  {{- with .Values.recipes.ingress.annotations }}
+  annotations:
+    {{- range $key, $value := . }}
+    {{ $key }}: {{ tpl $value $ | quote }}
+    {{- end }}
+  {{- end }}
+  labels:
+    {{- include "recipes.labels" . | nindent 4 }}
+spec:
+  {{- if .Values.recipes.ingress.ingressClassName }}
+  ingressClassName: {{ .Values.recipes.ingress.ingressClassName }}
+  {{- end -}}
+{{- if .Values.recipes.ingress.tls }}
+  tls:
+  - hosts:
+      - {{ .Values.recipes.ingress.hostName }}
+    secretName: {{ .Values.recipes.ingress.tls.tlsSecretName }}
+{{- end }}
+  rules:
+  - host: {{ .Values.recipes.ingress.hostName }}
+    http:
+      paths:
+      - backend:
+          service:
+            name: {{ .Release.Name }}-svc
+            port:
+              number: 8080
+        path: /
+        pathType: Prefix
+      - backend:
+          service:
+            name: {{ .Release.Name }}-svc
+            port:
+              number: 80
+        path: /media
+        pathType: Prefix
+      - backend:
+          service:
+            name: {{ .Release.Name }}-svc
+            port:
+              number: 80
+        path: /static
+        pathType: Prefix
+{{- end }}

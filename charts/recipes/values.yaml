@@ -1,0 +1,166 @@
+metadata:
+  # Namespace where the application will be deployed
+  namespace: recipes
+
+recipes:
+  # Number of replicas to deploy
+  replicas: 1
+  image:
+    # Container image repository to use
+    repository: vabene1111/recipes
+    # Container image tag to use
+    tag: 1.4.8
+    # Image pull policy to use when deploying the application
+    # Options: Always, IfNotPresent, Never
+    imagePullPolicy: Always
+
+  resources: {}
+    # requests:
+    #   cpu: 125m
+    #   memory: 64Mi
+    # limits:
+    #   cpu: 250
+    #   memory: 512Mi
+
+  # Secret key to use
+  # Leave both keyString and existingSecret empty to generate a random key
+  secretKey:
+    # A string used as the secret key
+    keyString: "asdasdasd"
+    # Name of an existing secret to use for the secret key
+    existingSecret: ""
+
+  # hosts the application can run under e.g. recipes.mydomain.com,cooking.mydomain.com,...
+  allowedHosts: '*'
+
+  ingress:
+    enabled: false
+    # For Kubernetes >= 1.18 you should specify the ingress-controller via the field ingressClassName
+    # See https://kubernetes.io/blog/2020/04/02/improvements-to-the-ingress-api-in-kubernetes-1.18/#specifying-the-class-of-an-ingress
+    # ingressClassName: nginx
+    annotations: {}
+      # cert-manager.io/cluster-issuer: letsencrypt-issuer
+      # kubernetes.io/ingress.class: nginx
+    hostName: recipes.local
+    tls: {}
+      # tlsSecretName: recipes-tls-secret
+  
+  # Manage persistent storage
+  pvc:
+    enabled: true
+    media:
+      # Set the name of an existing PVC to use
+      existingPvcName: ""
+      # Set the access mode for the PVC (e.g. ReadWriteOnce, ReadOnlyMany, ReadWriteMany)
+      accessMode: "ReadWriteOnce"
+      # Set the size of the PVC (e.g. 1Gi, 10Gi, 100Gi)
+      storageSize: "1Gi"
+      # Set the storage class for the PVC
+      storageClass: ""
+    static:
+      # Set the name of an existing PVC to use
+      existingPvcName: ""
+      # Set the access mode for the PVC (e.g. ReadWriteOnce, ReadOnlyMany, ReadWriteMany)
+      accessMode: "ReadWriteOnce"
+      # Set the size of the PVC (e.g. 1Gi, 10Gi, 100Gi)
+      storageSize: "1Gi"
+      # Set the storage class for the PVC
+      storageClass: ""
+
+  initChmodData:
+    # Enable or disable running the init container
+    enabled: true
+    # Resource requests and limits for initializing the chmod data
+    resources: {}
+      # requests:
+      #   cpu: 100m
+      #   memory: 64Mi
+      # limits:
+      #   cpu: 250m
+      #   memory: 512Mi
+
+  nginx:
+    image:
+      # Container image repository to use for the nginx container
+      repository: nginx
+      # Container image tag to use for the nginx container
+      tag: latest
+      # Image pull policy to use when deploying the nginx container
+      # Options: Always, IfNotPresent, Never
+      imagePullPolicy: Always
+    # Resource requests and limits for the nginx container
+    resources: {}
+      # requests:
+      #   cpu: 125m
+      #   memory: 64Mi
+      # limits:
+      #   cpu: 250
+      #   memory: 512Mi
+
+  livenessProbe:
+    # Number of times the application should fail the liveness probe before being restarted
+    failureThreshold: 3
+    httpGet:
+      # Path to hit for the liveness probe
+      path: /
+      # Port to use for the liveness probe
+      port: 8080
+      # Protocol to use for the liveness probe
+      # Options: HTTP, HTTPS
+      scheme: HTTP
+    # Time interval in seconds between liveness probes
+    periodSeconds: 30
+
+  readinessProbe:
+    httpGet:
+      # Path to hit for the readiness probe
+      path: /
+      # Port to use for the readiness probe
+      port: 8080
+      # Protocol to use for the readiness probe
+      # Options: HTTP, HTTPS
+      scheme: HTTP
+    # Time interval in seconds between readiness probes
+    periodSeconds: 30
+
+  securityContext:
+    runAsUser: 65534
+    runAsGroup: 65534
+
+# Default values for the PostgreSQL chart
+# For all values, visit https://github.com/bitnami/charts/blob/main/bitnami/postgresql/values.yaml
+postgresql:
+  global:
+    postgresql:
+      auth:
+        # Username to use for the PostgreSQL database
+        username: recipes
+        # Password to use for the PostgreSQL user
+        password: mysecretpass
+        # Database name to use for the PostgreSQL database
+        database: recipes
+  primary:
+    ## PostgreSQL Primary persistence configuration
+    ##
+    persistence:
+      ## @param primary.persistence.enabled Enable PostgreSQL Primary data persistence using PVC
+      ##
+      enabled: true
+      ## @param primary.persistence.existingClaim Name of an existing PVC to use
+      ##
+      existingClaim: ""
+      ## @param primary.persistence.storageClass PVC Storage Class for PostgreSQL Primary data volume
+      ## If defined, storageClassName: <storageClass>
+      ## If set to "-", storageClassName: "", which disables dynamic provisioning
+      ## If undefined (the default) or set to null, no storageClassName spec is
+      ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+      ##   GKE, AWS & OpenStack)
+      ##
+      storageClass: ""
+      ## @param primary.persistence.accessModes PVC Access Mode for PostgreSQL volume
+      ##
+      accessModes:
+        - ReadWriteOnce
+      ## @param primary.persistence.size PVC Storage Request for PostgreSQL volume
+      ##
+      size: 1Gi

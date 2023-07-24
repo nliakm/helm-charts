@@ -1,0 +1,17 @@
+---
+apiVersion: v2
+
+name: recipes
+
+description: Application for managing recipes, planning meals, building shopping lists and much much more!
+
+type: application
+
+version: 0.1.0
+
+appVersion: "1.4.8"
+
+dependencies:
+- name: postgresql
+  version: "12.2.3"
+  repository: https://charts.bitnami.com/bitnami

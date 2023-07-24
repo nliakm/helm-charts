@@ -1,0 +1,202 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-deployment
+  namespace: {{ .Values.metadata.namespace }}
+  labels:
+    {{- include "recipes.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.recipes.replicas }}
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      {{- include "recipes.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "recipes.selectorLabels" . | nindent 8 }}
+    spec:
+      restartPolicy: Always
+      {{- if .Values.recipes.initChmodData.enabled }}
+      initContainers:
+      - name: init-chmod-data
+        image: {{ .Values.recipes.image.repository }}:{{ .Values.recipes.image.tag }}
+        imagePullPolicy: {{ .Values.recipes.image.imagePullPolicy }}
+        env:
+          - name: SECRET_KEY
+            valueFrom:
+              secretKeyRef:
+                {{- if ne .Values.recipes.secretKey.existingSecret "" }}
+                name: {{ .Values.recipes.secretKey.existingSecret }}
+                {{- else }}
+                name: {{ .Release.Name }}-secret-key
+                key: secret-key
+                {{- end }}
+          - name: DB_ENGINE
+            value: django.db.backends.postgresql_psycopg2
+          - name: POSTGRES_HOST
+            value: {{ .Release.Name }}-postgresql
+          - name: POSTGRES_PORT
+            value: "5432"
+          - name: POSTGRES_USER
+            value: {{ .Values.postgresql.global.postgresql.auth.username }}
+          - name: POSTGRES_DB
+            value: {{ .Values.postgresql.global.postgresql.auth.database }}
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Release.Name }}-postgresql
+                key: password
+        {{- with .Values.recipes.initChmodData.resources }}
+        resources:
+        {{- toYaml . | nindent 10 }}
+        {{- end }}
+        command:
+        - sh
+        - -c
+        - |
+          set -e
+          source venv/bin/activate
+          echo "Updating database"
+          python manage.py migrate
+          python manage.py collectstatic_js_reverse
+          python manage.py collectstatic --noinput
+          echo "Setting media file attributes"
+          chown -R {{ .Values.recipes.securityContext.runAsUser }}:{{ .Values.recipes.securityContext.runAsGroup }} /opt/recipes/mediafiles
+          find /opt/recipes/mediafiles -type d | xargs -r chmod 755
+          find /opt/recipes/mediafiles -type f | xargs -r chmod 644
+          echo "Done"
+        securityContext:
+          runAsUser: 0
+        volumeMounts:
+        - mountPath: /opt/recipes/mediafiles
+          name: media
+          subPath: files
+        - mountPath: /opt/recipes/staticfiles
+          name: static
+          subPath: files
+      {{- end }}
+      containers:
+      - name: recipes-nginx
+        image: {{ .Values.recipes.nginx.image.repository }}:{{ .Values.recipes.nginx.image.tag }}
+        imagePullPolicy: {{ .Values.recipes.nginx.image.imagePullPolicy }}
+        ports:
+          - containerPort: 80
+            protocol: TCP
+            name: http
+          - containerPort: 8080
+            protocol: TCP
+            name: gunicorn
+        {{- with .Values.recipes.nginx.resources }}
+        resources:
+        {{- toYaml . | nindent 10 }}
+        {{- end }}
+        volumeMounts:
+          - mountPath: /media
+            name: media
+            subPath: files
+          - mountPath: /static
+            name: static
+            subPath: files
+          - name: nginx-config
+            mountPath: /etc/nginx/nginx.conf
+            subPath: nginx-config
+            readOnly: true
+      - name: recipes
+        image: {{ .Values.recipes.image.repository }}:{{ .Values.recipes.image.tag }}
+        imagePullPolicy: {{ .Values.recipes.image.imagePullPolicy }}
+        command:
+          - /opt/recipes/venv/bin/gunicorn
+          - -b
+          - :8080
+          - --access-logfile
+          - "-"
+          - --error-logfile
+          - "-"
+          - --log-level
+          - INFO
+          - recipes.wsgi
+        {{- with .Values.recipes.livenessProbe }}
+        livenessProbe:
+        {{- toYaml . | nindent 10 }}
+        {{- end }}
+        {{- with .Values.recipes.readinessProbe }}
+        readinessProbe:
+        livenessProbe:
+        {{- toYaml . | nindent 10 }}
+        {{- end }}
+        {{- with .Values.recipes.resources }}
+        resources:
+        {{- toYaml . | nindent 10 }}
+        {{- end }}
+        volumeMounts:
+          - mountPath: /opt/recipes/mediafiles
+            name: media
+            # mount as subPath due to lost+found on ext4 pvc
+            subPath: files
+          - mountPath: /opt/recipes/staticfiles
+            name: static
+            # mount as subPath due to lost+found on ext4 pvc
+            subPath: files
+        env:
+          - name: DEBUG
+            value: "0"
+          - name: ALLOWED_HOSTS
+            value: {{ .Values.recipes.allowedHosts | quote }}
+          - name: SECRET_KEY
+            valueFrom:
+              secretKeyRef:
+                {{- if ne .Values.recipes.secretKey.existingSecret "" }}
+                name: {{ .Values.recipes.secretKey.existingSecret }}
+                {{- else }}
+                name: {{ .Release.Name }}-secret-key
+                key: secret-key
+                {{- end }}
+          - name: DB_ENGINE
+            value: django.db.backends.postgresql_psycopg2
+          - name: POSTGRES_HOST
+            value: {{ .Release.Name }}-postgresql
+          - name: POSTGRES_PORT
+            value: "5432"
+          - name: POSTGRES_USER
+            value: {{ .Values.postgresql.global.postgresql.auth.username }}
+          - name: POSTGRES_DB
+            value: {{ .Values.postgresql.global.postgresql.auth.database }}
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Release.Name }}-postgresql
+                key: password
+        {{- with .Values.recipes.securityContext }}
+        securityContext:
+        {{- toYaml . | nindent 10 }}
+        {{- end }}
+      volumes:
+      {{- if .Values.recipes.pvc.enabled }}
+      - name: media
+        persistentVolumeClaim:
+          {{- if eq .Values.recipes.pvc.media.existingPvcName "" }}
+          claimName: {{ .Release.Name }}-media-pvc
+          {{- else }}
+          claimName: {{ .Values.recipes.pvc.media.existingPvcName }}
+          {{- end }}
+      - name: static
+        persistentVolumeClaim:
+          {{- if eq .Values.recipes.pvc.static.existingPvcName "" }}
+          claimName: {{ .Release.Name }}-static-pvc
+          {{- else }}
+          claimName: {{ .Values.recipes.pvc.static.existingPvcName }}
+          {{- end }}
+      {{- else }}
+      - name: media
+        emptyDir:
+          sizeLimit: 1Gi
+      - name: static
+        emptyDir:
+          sizeLimit: 1Gi
+      {{- end }}
+      - name: nginx-config
+        configMap:
+          name: {{ .Release.Name }}-nginx-config
