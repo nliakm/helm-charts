@@ -3,7 +3,7 @@ entries:
   monica:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2023-08-23T15:40:35.021136+02:00"
+    created: "2023-08-23T16:18:04.098032+02:00"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -40,12 +40,12 @@ entries:
     - https://hub.docker.com/_/monica
     type: application
     urls:
-    - https://github.com/nliakm/helm-charts/monica-1.0.6.tgz
+    - https://nliakm.github.io/helm-charts/monica-1.0.6.tgz
     version: 1.0.6
   recipes:
   - apiVersion: v2
     appVersion: 1.4.8
-    created: "2023-08-23T15:40:35.033498+02:00"
+    created: "2023-08-23T16:18:04.130694+02:00"
     dependencies:
     - name: postgresql
       repository: https://charts.bitnami.com/bitnami
@@ -56,6 +56,6 @@ entries:
     name: recipes
     type: application
     urls:
-    - https://github.com/nliakm/helm-charts/recipes-0.1.0.tgz
+    - https://nliakm.github.io/helm-charts/recipes-0.1.0.tgz
     version: 0.1.0
-generated: "2023-08-23T15:40:35.002499+02:00"
+generated: "2023-08-23T16:18:04.071272+02:00"
