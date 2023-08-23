@@ -1,0 +1,13 @@
+{{- if .Values.monica.phpConfigs -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "monica.fullname" . }}-phpconfig
+  labels:
+    {{- include "monica.labels" . | nindent 4 }}
+data:
+{{- range $key, $value := .Values.monica.phpConfigs }}
+  {{ $key }}: |-
+{{ $value | indent 4 }}
+{{- end }}
+{{- end }}

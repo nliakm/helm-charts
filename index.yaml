@@ -1,19 +1,61 @@
 apiVersion: v1
 entries:
+  monica:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2023-08-23T15:40:35.021136+02:00"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 11.6.*
+    - condition: mariadb.enabled
+      name: mariadb
+      repository: https://charts.bitnami.com/bitnami
+      version: 11.0.*
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 16.12.*
+    - condition: memcached.enabled
+      name: memcached
+      repository: https://charts.bitnami.com/bitnami
+      version: 6.3.*
+    - condition: meilisearch.enabled
+      name: meilisearch
+      repository: https://meilisearch.github.io/meilisearch-kubernetes
+      version: 0.1.*
+    description: A Helm chart for Kubernetes to install Monica
+    digest: d9acf1f24d883a87734848ef0e908a32a5803872f78dfc59d60eafe20470033c
+    icon: https://www.monicahq.com/favicon.ico
+    keywords:
+    - crm
+    kubeVersion: '>=1.16.0-0'
+    maintainers:
+    - name: MonicaHQ
+      url: https://github.com/monicahq/monica
+    name: monica
+    sources:
+    - https://github.com/monicahq/monica
+    - https://hub.docker.com/_/monica
+    type: application
+    urls:
+    - https://github.com/nliakm/helm-charts/monica-1.0.6.tgz
+    version: 1.0.6
   recipes:
   - apiVersion: v2
     appVersion: 1.4.8
-    created: "2023-07-24T09:41:30.643103+02:00"
+    created: "2023-08-23T15:40:35.033498+02:00"
     dependencies:
     - name: postgresql
       repository: https://charts.bitnami.com/bitnami
       version: 12.2.3
     description: Application for managing recipes, planning meals, building shopping
       lists and much much more!
-    digest: 864e5ac1fc34236601204662a8f64e2063c3d8fe239d65c8ac25ae4bf0c88af3
+    digest: d710aca6d2d463621778051dd637bde8168036a28a1dcdb5f8a140f9102ab01b
     name: recipes
     type: application
     urls:
     - https://github.com/nliakm/helm-charts/recipes-0.1.0.tgz
     version: 0.1.0
-generated: "2023-07-24T09:41:30.636526+02:00"
+generated: "2023-08-23T15:40:35.002499+02:00"

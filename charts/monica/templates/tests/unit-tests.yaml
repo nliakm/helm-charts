@@ -1,0 +1,25 @@
+{{- $fullName := include "monica.fullname" . -}}
+apiVersion: v1
+kind: Pod
+metadata:
+  name: {{ $fullName }}-unit-tests
+  labels:
+    {{- include "monica.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  serviceAccountName: {{ include "monica.serviceAccountName" . }}
+  {{- if .Values.imagePullSecrets }}
+  imagePullSecrets:
+  - name: {{ .Values.imagePullSecrets }}
+  {{- end }}
+  containers:
+    - name: unit-tests
+      image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+      imagePullPolicy: {{ .Values.image.pullPolicy }}
+      command: ['entrypoint-unittests.sh']
+      env:
+        {{- include "monica.env" . | indent 8 }}
+      resources:
+        {{- toYaml .Values.tests.unitTests.resources | nindent 8 }}
+  restartPolicy: Never
