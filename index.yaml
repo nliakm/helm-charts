@@ -2,8 +2,49 @@ apiVersion: v1
 entries:
   monica:
   - apiVersion: v2
+    appVersion: 4.0.0
+    created: "2023-09-30T11:19:25.795053+02:00"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 11.6.*
+    - condition: mariadb.enabled
+      name: mariadb
+      repository: https://charts.bitnami.com/bitnami
+      version: 11.0.*
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 16.12.*
+    - condition: memcached.enabled
+      name: memcached
+      repository: https://charts.bitnami.com/bitnami
+      version: 6.3.*
+    - condition: meilisearch.enabled
+      name: meilisearch
+      repository: https://meilisearch.github.io/meilisearch-kubernetes
+      version: 0.1.*
+    description: A Helm chart for Kubernetes to install Monica
+    digest: f34eb3e904a982b743f941c6a5a64651295f2575d840c662a1ae4f2f964948ff
+    icon: https://www.monicahq.com/favicon.ico
+    keywords:
+    - crm
+    kubeVersion: '>=1.16.0-0'
+    maintainers:
+    - name: MonicaHQ
+      url: https://github.com/monicahq/monica
+    name: monica
+    sources:
+    - https://github.com/monicahq/monica
+    - https://hub.docker.com/_/monica
+    type: application
+    urls:
+    - https://nliakm.github.io/helm-charts/monica-1.0.7.tgz
+    version: 1.0.7
+  - apiVersion: v2
     appVersion: 1.0.0
-    created: "2023-08-23T16:18:04.098032+02:00"
+    created: "2023-09-30T11:19:25.784516+02:00"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -44,8 +85,23 @@ entries:
     version: 1.0.6
   recipes:
   - apiVersion: v2
+    appVersion: 1.5.6
+    created: "2023-09-30T11:19:25.803103+02:00"
+    dependencies:
+    - name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 12.2.3
+    description: Application for managing recipes, planning meals, building shopping
+      lists and much much more!
+    digest: e196e303c5662ddd52bc82077bd2dd0dc0ce25e985efc09bb9ec84b51f618e44
+    name: recipes
+    type: application
+    urls:
+    - https://nliakm.github.io/helm-charts/recipes-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
     appVersion: 1.4.8
-    created: "2023-08-23T16:18:04.130694+02:00"
+    created: "2023-09-30T11:19:25.800024+02:00"
     dependencies:
     - name: postgresql
       repository: https://charts.bitnami.com/bitnami
@@ -58,4 +114,4 @@ entries:
     urls:
     - https://nliakm.github.io/helm-charts/recipes-0.1.0.tgz
     version: 0.1.0
-generated: "2023-08-23T16:18:04.071272+02:00"
+generated: "2023-09-30T11:19:25.773046+02:00"
