@@ -29,7 +29,7 @@ recipes:
 | metadata.namespace                         | Namespace where the application will be deployed                                  | recipes       |
 | recipes.replicas                           | Number of replicas to deploy                                                      | 1             |
 | recipes.image.repository                   | Container image repository to use                                                  | vabene1111/recipes |
-| recipes.image.tag                          | Container image tag to use                                                         | 1.4.8         |
+| recipes.image.tag                          | Container image tag to use                                                         | 1.5.6         |
 | recipes.image.imagePullPolicy              | Image pull policy to use when deploying the application                           | Always        |
 | recipes.secretKey.keyString                | A string used as the secret key                                                     | ""            |
 | recipes.secretKey.existingSecret           | Name of an existing secret to use for the secret key                               | ""            |

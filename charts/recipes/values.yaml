@@ -9,7 +9,7 @@ recipes:
     # Container image repository to use
     repository: vabene1111/recipes
     # Container image tag to use
-    tag: 1.4.8
+    tag: 1.5.6
     # Image pull policy to use when deploying the application
     # Options: Always, IfNotPresent, Never
     imagePullPolicy: IfNotPresent
@@ -33,6 +33,22 @@ recipes:
   # hosts the application can run under e.g. recipes.mydomain.com,cooking.mydomain.com,...
   allowedHosts: '*'
 
+  # Mutually exclusive with postgresql section
+  externalDatabase:
+    enabled: false
+    host:
+    ## Database user
+    user: recipes
+
+    ## Database password
+    password: secret
+    database: recipes
+    existingSecret:
+      enabled: false
+      secretName:
+      usernameKey:
+      passwordKey:
+    
   ingress:
     enabled: false
     # For Kubernetes >= 1.18 you should specify the ingress-controller via the field ingressClassName

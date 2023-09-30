@@ -36,10 +36,33 @@ spec:
                 {{- end }}
           - name: DB_ENGINE
             value: django.db.backends.postgresql_psycopg2
-          - name: POSTGRES_HOST
-            value: {{ .Release.Name }}-postgresql
           - name: POSTGRES_PORT
             value: "5432"
+          {{- if .Values.externalDatabase.enabled }}
+          - name: POSTGRES_HOST
+            value: {{ .Values.externalDatabase.host }}
+          - name: POSTGRES_DB
+            value: {{ .Values.externalDatabase.database }}
+          {{- if .Values.externalDatabase.existingSecret.enabled }}
+          - name: POSTGRES_USER
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.externalDatabase.existingSecret.secretName }}
+                key: {{ .Values.externalDatabase.existingSecret.usernameKey }}
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.externalDatabase.existingSecret.secretName }}
+                key: {{ .Values.externalDatabase.existingSecret.passwordKey }}
+          {{- else }}
+          - name: POSTGRES_USER
+            value: {{ .Values.externalDatabase.user }}
+          - name: POSTGRES_PASSWORD
+            value: {{ .Values.externalDatabase.password }}
+          {{- end }}
+          {{- else }}
+          - name: POSTGRES_HOST
+            value: {{ .Release.Name }}-postgresql
           - name: POSTGRES_USER
             value: {{ .Values.postgresql.global.postgresql.auth.username }}
           - name: POSTGRES_DB
@@ -49,6 +72,7 @@ spec:
               secretKeyRef:
                 name: {{ .Release.Name }}-postgresql
                 key: password
+          {{- end }}
         {{- with .Values.recipes.initChmodData.resources }}
         resources:
         {{- toYaml . | nindent 10 }}
@@ -156,10 +180,33 @@ spec:
                 {{- end }}
           - name: DB_ENGINE
             value: django.db.backends.postgresql_psycopg2
-          - name: POSTGRES_HOST
-            value: {{ .Release.Name }}-postgresql
           - name: POSTGRES_PORT
             value: "5432"
+          {{- if .Values.externalDatabase.enabled }}
+          - name: POSTGRES_HOST
+            value: {{ .Values.externalDatabase.host }}
+          - name: POSTGRES_DB
+            value: {{ .Values.externalDatabase.database }}
+          {{- if .Values.externalDatabase.existingSecret.enabled }}
+          - name: POSTGRES_USER
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.externalDatabase.existingSecret.secretName }}
+                key: {{ .Values.externalDatabase.existingSecret.usernameKey }}
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.externalDatabase.existingSecret.secretName }}
+                key: {{ .Values.externalDatabase.existingSecret.passwordKey }}
+          {{- else }}
+          - name: POSTGRES_USER
+            value: {{ .Values.externalDatabase.user }}
+          - name: POSTGRES_PASSWORD
+            value: {{ .Values.externalDatabase.password }}
+          {{- end }}
+          {{- else }}
+          - name: POSTGRES_HOST
+            value: {{ .Release.Name }}-postgresql
           - name: POSTGRES_USER
             value: {{ .Values.postgresql.global.postgresql.auth.username }}
           - name: POSTGRES_DB
@@ -169,6 +216,7 @@ spec:
               secretKeyRef:
                 name: {{ .Release.Name }}-postgresql
                 key: password
+          {{- end }}
         {{- with .Values.recipes.securityContext }}
         securityContext:
         {{- toYaml . | nindent 10 }}
