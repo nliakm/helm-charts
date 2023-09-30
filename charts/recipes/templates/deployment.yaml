@@ -38,27 +38,27 @@ spec:
             value: django.db.backends.postgresql_psycopg2
           - name: POSTGRES_PORT
             value: "5432"
-          {{- if .Values.externalDatabase.enabled }}
+          {{- if .Values.recipes.externalDatabase.enabled }}
           - name: POSTGRES_HOST
-            value: {{ .Values.externalDatabase.host }}
+            value: {{ .Values.recipes.externalDatabase.host }}
           - name: POSTGRES_DB
-            value: {{ .Values.externalDatabase.database }}
-          {{- if .Values.externalDatabase.existingSecret.enabled }}
+            value: {{ .Values.recipes.externalDatabase.database }}
+          {{- if .Values.recipes.externalDatabase.existingSecret.enabled }}
           - name: POSTGRES_USER
             valueFrom:
               secretKeyRef:
-                name: {{ .Values.externalDatabase.existingSecret.secretName }}
-                key: {{ .Values.externalDatabase.existingSecret.usernameKey }}
+                name: {{ .Values.recipes.externalDatabase.existingSecret.secretName }}
+                key: {{ .Values.recipes.externalDatabase.existingSecret.usernameKey }}
           - name: POSTGRES_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: {{ .Values.externalDatabase.existingSecret.secretName }}
-                key: {{ .Values.externalDatabase.existingSecret.passwordKey }}
+                name: {{ .Values.recipes.externalDatabase.existingSecret.secretName }}
+                key: {{ .Values.recipes.externalDatabase.existingSecret.passwordKey }}
           {{- else }}
           - name: POSTGRES_USER
-            value: {{ .Values.externalDatabase.user }}
+            value: {{ .Values.recipes.externalDatabase.user }}
           - name: POSTGRES_PASSWORD
-            value: {{ .Values.externalDatabase.password }}
+            value: {{ .Values.recipes.externalDatabase.password }}
           {{- end }}
           {{- else }}
           - name: POSTGRES_HOST
@@ -182,27 +182,27 @@ spec:
             value: django.db.backends.postgresql_psycopg2
           - name: POSTGRES_PORT
             value: "5432"
-          {{- if .Values.externalDatabase.enabled }}
+          {{- if .Values.recipes.externalDatabase.enabled }}
           - name: POSTGRES_HOST
-            value: {{ .Values.externalDatabase.host }}
+            value: {{ .Values.recipes.externalDatabase.host }}
           - name: POSTGRES_DB
-            value: {{ .Values.externalDatabase.database }}
-          {{- if .Values.externalDatabase.existingSecret.enabled }}
+            value: {{ .Values.recipes.externalDatabase.database }}
+          {{- if .Values.recipes.externalDatabase.existingSecret.enabled }}
           - name: POSTGRES_USER
             valueFrom:
               secretKeyRef:
-                name: {{ .Values.externalDatabase.existingSecret.secretName }}
-                key: {{ .Values.externalDatabase.existingSecret.usernameKey }}
+                name: {{ .Values.recipes.externalDatabase.existingSecret.secretName }}
+                key: {{ .Values.recipes.externalDatabase.existingSecret.usernameKey }}
           - name: POSTGRES_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: {{ .Values.externalDatabase.existingSecret.secretName }}
-                key: {{ .Values.externalDatabase.existingSecret.passwordKey }}
+                name: {{ .Values.recipes.externalDatabase.existingSecret.secretName }}
+                key: {{ .Values.recipes.externalDatabase.existingSecret.passwordKey }}
           {{- else }}
           - name: POSTGRES_USER
-            value: {{ .Values.externalDatabase.user }}
+            value: {{ .Values.recipes.externalDatabase.user }}
           - name: POSTGRES_PASSWORD
-            value: {{ .Values.externalDatabase.password }}
+            value: {{ .Values.recipes.externalDatabase.password }}
           {{- end }}
           {{- else }}
           - name: POSTGRES_HOST
