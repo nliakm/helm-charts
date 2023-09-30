@@ -6,10 +6,10 @@ Helm must be installed to use the charts. Please refer to Helm's documentation t
 
 Add the repository
 ```
-helm repo add recipes https://nliakm.github.io/helm-charts/
+helm repo add nliakm-charts https://nliakm.github.io/helm-charts/
 ```
 
 Install the helm chart into kubernetes cluster
 ```
-helm install recipes recipes/recipes -n <namespace>
+helm install my-release nliakm-charts/<chart> -n <namespace>
 ```
