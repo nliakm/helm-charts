@@ -1,0 +1,9 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: {{ printf "%s-%s" .Release.Name "config"  }}
+  labels:
+    {{- include "adguard-home.labels" . | nindent 4 }}
+data:
+  AdGuardHome.yaml: |-
+    {{- toYaml .Values.config | nindent 4 }}

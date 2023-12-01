@@ -1,0 +1,57 @@
+{{- if .Values.ingress.enabled }}
+apiVersion: {{ include "adguard-home.ingress.apiVersion" . }}
+kind: Ingress
+metadata:
+  name: {{ template "adguard-home.fullname" . }}
+  labels:
+    {{- include "adguard-home.labels" . | nindent 4 }}
+{{- if .Values.ingress.labels }}
+{{ toYaml .Values.ingress.labels | indent 4 }}
+{{- end }}
+{{- if .Values.ingress.annotations }}
+  annotations:
+{{ toYaml .Values.ingress.annotations | indent 4 }}
+{{- end }}
+spec:
+  {{- if .Values.ingress.className }}
+  ingressClassName: {{ .Values.ingress.className }}
+  {{- end }}
+  rules:
+  - host: {{ .Values.ingress.hostName }}
+    http:
+      paths:
+      - path: /
+        {{- if eq (include "adguard-home.ingress.apiVersion" $) "networking.k8s.io/v1" }}
+        pathType: {{ .Values.ingress.pathType }}
+        {{- end }}
+        backend:
+          {{- if eq (include "adguard-home.ingress.apiVersion" $) "networking.k8s.io/v1" }}
+          service:
+            name: {{ template "adguard-home.fullname" . }}
+            port:
+              number: 80
+          {{- else }}
+          serviceName: {{ template "adguard-home.fullname" . }}
+          servicePort: 80
+          {{- end }}
+      {{- if .Values.adminPanelEnabled }}
+      - path: /admin
+        {{- if eq (include "adguard-home.ingress.apiVersion" $) "networking.k8s.io/v1" }}
+        pathType: {{ .Values.ingress.pathType }}
+        {{- end }}
+        backend:
+          {{- if eq (include "adguard-home.ingress.apiVersion" $) "networking.k8s.io/v1" }}
+          service:
+            name: {{ template "adguard-home.fullname" . }}
+            port:
+              number: 3000
+          {{- else }}
+          serviceName: {{ template "adguard-home.fullname" . }}
+          servicePort: 3000
+          {{- end }}
+      {{- end }}
+{{- if .Values.ingress.tls }}
+  tls:
+{{ toYaml .Values.ingress.tls | indent 4 }}
+{{- end -}}
+{{- end }}
