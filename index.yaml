@@ -3,7 +3,18 @@ entries:
   adguard-home:
   - apiVersion: v2
     appVersion: 0.107.41
-    created: "2023-12-01T10:20:16.893163+01:00"
+    created: "2023-12-01T11:47:08.759989+01:00"
+    description: Application for managing recipes, planning meals, building shopping
+      lists and much much more!
+    digest: deeebc194501ae6b5a92ea53f87e1bcf519a3c383916d3631a7c9356b591792a
+    name: adguard-home
+    type: application
+    urls:
+    - https://nliakm.github.io/helm-charts/adguard-home-0.0.2.tgz
+    version: 0.0.2
+  - apiVersion: v2
+    appVersion: 0.107.41
+    created: "2023-12-01T11:47:08.759104+01:00"
     description: Application for managing recipes, planning meals, building shopping
       lists and much much more!
     digest: 3b885c774594281ed13fe1f7978a94d16ab50dbedc6f8b74883454111c3ead99
@@ -15,7 +26,7 @@ entries:
   monica:
   - apiVersion: v2
     appVersion: 4.0.0
-    created: "2023-12-01T10:20:16.936069+01:00"
+    created: "2023-12-01T11:47:08.794037+01:00"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -56,7 +67,7 @@ entries:
     version: 1.0.7
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2023-12-01T10:20:16.915835+01:00"
+    created: "2023-12-01T11:47:08.777068+01:00"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -98,7 +109,7 @@ entries:
   recipes:
   - apiVersion: v2
     appVersion: 1.5.6
-    created: "2023-12-01T10:20:16.988091+01:00"
+    created: "2023-12-01T11:47:08.821963+01:00"
     dependencies:
     - condition: deployPostgresDatabase
       name: postgresql
@@ -114,7 +125,7 @@ entries:
     version: 0.2.2
   - apiVersion: v2
     appVersion: 1.5.6
-    created: "2023-12-01T10:20:16.976881+01:00"
+    created: "2023-12-01T11:47:08.815544+01:00"
     dependencies:
     - condition: recipes.externalDatabase.enabled
       name: postgresql
@@ -130,7 +141,7 @@ entries:
     version: 0.2.1
   - apiVersion: v2
     appVersion: 1.5.6
-    created: "2023-12-01T10:20:16.963455+01:00"
+    created: "2023-12-01T11:47:08.807626+01:00"
     dependencies:
     - name: postgresql
       repository: https://charts.bitnami.com/bitnami
@@ -145,7 +156,7 @@ entries:
     version: 0.2.0
   - apiVersion: v2
     appVersion: 1.4.8
-    created: "2023-12-01T10:20:16.950904+01:00"
+    created: "2023-12-01T11:47:08.800555+01:00"
     dependencies:
     - name: postgresql
       repository: https://charts.bitnami.com/bitnami
@@ -158,4 +169,4 @@ entries:
     urls:
     - https://nliakm.github.io/helm-charts/recipes-0.1.0.tgz
     version: 0.1.0
-generated: "2023-12-01T10:20:16.891367+01:00"
+generated: "2023-12-01T11:47:08.753223+01:00"

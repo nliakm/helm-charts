@@ -116,10 +116,11 @@ spec:
           #   httpGet:
           #     path: /
           #     port: http
-          # readinessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+            periodSeconds: 30
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
