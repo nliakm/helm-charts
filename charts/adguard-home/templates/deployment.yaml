@@ -38,35 +38,23 @@ spec:
       - name: config-dir
         emptyDir:
           sizeLimit: 500Mi
-      initContainers:
-      - command:
-        - /bin/sh
-        - -c
-        - |
-          cp /tmp/AdGuardHome.yaml /opt/adguardhome/conf/AdGuardHome.yaml
-        image: httpd:2.4.51-alpine
-        imagePullPolicy: IfNotPresent
-        name: conf-init
-        terminationMessagePath: /dev/termination-log
-        terminationMessagePolicy: File
-        volumeMounts:
-        - mountPath: /opt/adguardhome/conf
-          name: config-dir
-        - mountPath: /tmp
-          name: adguard-home-config
-        resources:
-          limits:
-            cpu: 100m
-            memory: "128Mi"
-          requests:
-            cpu: 100m
-            memory: "64Mi"
+      {{- if .Values.config.tls.enabled }}
+      - name: tls-cert
+        secret:
+          defaultMode: 420
+          secretName: "{{ .Values.ingress.tls.secretName }}"
+      {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+        - command:
+            - sh
+            - -c
+            - |
+              cp /tmp/AdGuardHome.yaml /opt/adguardhome/conf && sleep 10 && /opt/adguardhome/AdGuardHome --no-check-update --config /opt/adguardhome/conf/AdGuardHome.yaml
           ports:
           - name: dns-tcp
             containerPort: 53
@@ -120,3 +108,9 @@ spec:
           - name: data-vol
             mountPath: /opt/adguardhome/conf
             subPath: conf
+          - mountPath: /tmp
+            name: adguard-home-config
+          {{- if .Values.config.tls.enabled }}
+          - mountPath: /opt/adguardhome/certificates
+            name: tls-cert
+          {{- end }}

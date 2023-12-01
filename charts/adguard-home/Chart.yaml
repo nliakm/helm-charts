@@ -7,6 +7,6 @@ description: Application for managing recipes, planning meals, building shopping
 
 type: application
 
-version: 0.0.3
+version: 0.0.4
 
 appVersion: "0.107.41"

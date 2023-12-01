@@ -27,7 +27,7 @@ spec:
         backend:
           {{- if eq (include "adguard-home.ingress.apiVersion" $) "networking.k8s.io/v1" }}
           service:
-            name: {{ template "adguard-home.fullname" . }}
+            name: {{ template "adguard-home.fullname" . }}-http
             port:
               number: 80
           {{- else }}
