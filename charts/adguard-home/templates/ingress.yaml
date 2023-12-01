@@ -34,22 +34,6 @@ spec:
           serviceName: {{ template "adguard-home.fullname" . }}
           servicePort: 80
           {{- end }}
-      {{- if .Values.adminPanelEnabled }}
-      - path: /admin
-        {{- if eq (include "adguard-home.ingress.apiVersion" $) "networking.k8s.io/v1" }}
-        pathType: {{ .Values.ingress.pathType }}
-        {{- end }}
-        backend:
-          {{- if eq (include "adguard-home.ingress.apiVersion" $) "networking.k8s.io/v1" }}
-          service:
-            name: {{ template "adguard-home.fullname" . }}
-            port:
-              number: 3000
-          {{- else }}
-          serviceName: {{ template "adguard-home.fullname" . }}
-          servicePort: 3000
-          {{- end }}
-      {{- end }}
 {{- if .Values.ingress.tls }}
   tls:
 {{ toYaml .Values.ingress.tls | indent 4 }}

@@ -30,16 +30,6 @@ services:
     # -- (int) Node port for HTTP (when applicable)
     port: 80
     nodePort:
-  https:
-    enabled: true
-    type: ClusterIP
-    # -- Internal cluster service IP for HTTPS (when applicable)
-    clusterIP: ""
-    # -- Load balancer IP for HTTPS (when applicable)
-    loadBalancerIP:
-    # -- (int) Node port for HTTPS (when applicable)
-    nodePort:
-    port: 443
   dns:
     enabled: true
     type: NodePort
@@ -89,9 +79,6 @@ services:
     udp:
       port: 5443
       nodePort:
-
-persistence:
-  enabled: false
 
 ingress:
   enabled: true
