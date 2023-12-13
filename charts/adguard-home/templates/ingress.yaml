@@ -16,6 +16,12 @@ spec:
   {{- if .Values.ingress.className }}
   ingressClassName: {{ .Values.ingress.className }}
   {{- end }}
+{{- if .Values.ingress.tls }}
+  tls:
+  - hosts:
+      - {{ .Values.ingress.hostName }}
+    secretName: {{ .Values.ingress.tls.secretName }}
+{{- end }}
   rules:
   - host: {{ .Values.ingress.hostName }}
     http:
@@ -34,8 +40,4 @@ spec:
           serviceName: {{ template "adguard-home.fullname" . }}
           servicePort: 80
           {{- end }}
-{{- if .Values.ingress.tls }}
-  tls:
-{{ toYaml .Values.ingress.tls | indent 4 }}
-{{- end -}}
 {{- end }}
