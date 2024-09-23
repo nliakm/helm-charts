@@ -1,0 +1,43 @@
+{{- if .Values.ingress.enabled }}
+apiVersion: {{ include "linkding.ingress.apiVersion" . }}
+kind: Ingress
+metadata:
+  name: {{ template "linkding.fullname" . }}
+  labels:
+    {{- include "linkding.labels" . | nindent 4 }}
+{{- if .Values.ingress.labels }}
+{{ toYaml .Values.ingress.labels | indent 4 }}
+{{- end }}
+{{- if .Values.ingress.annotations }}
+  annotations:
+{{ toYaml .Values.ingress.annotations | indent 4 }}
+{{- end }}
+spec:
+  {{- if .Values.ingress.className }}
+  ingressClassName: {{ .Values.ingress.className }}
+  {{- end }}
+{{- if .Values.ingress.tls }}
+  tls:
+  - hosts:
+      - {{ .Values.ingress.hostName }}
+    secretName: {{ .Values.ingress.tls.secretName }}
+{{- end }}
+  rules:
+  - host: {{ .Values.ingress.hostName }}
+    http:
+      paths:
+      - path: /
+        {{- if eq (include "linkding.ingress.apiVersion" $) "networking.k8s.io/v1" }}
+        pathType: {{ .Values.ingress.pathType }}
+        {{- end }}
+        backend:
+          {{- if eq (include "linkding.ingress.apiVersion" $) "networking.k8s.io/v1" }}
+          service:
+            name: {{ template "linkding.fullname" . }}-http
+            port:
+              number: 80
+          {{- else }}
+          serviceName: {{ template "linkding.fullname" . }}
+          servicePort: 80
+          {{- end }}
+{{- end }}

@@ -1,0 +1,85 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "linkding.fullname" . }}
+  labels:
+    {{- include "linkding.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "linkding.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "linkding.selectorLabels" . | nindent 8 }}
+      annotations:
+        {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.image.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if .Values.serviceAccount.create }}
+      serviceAccountName: {{ include "linkding.serviceAccountName" . }}
+      {{- end }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      volumes:
+      {{- if .Values.persistence.enabled }}
+      - name: data-vol
+        persistentVolumeClaim:
+          {{- if eq .Values.persistence.existingPvcName "" }}
+          claimName: {{ .Release.Name }}
+          {{- else }}
+          claimName: {{ .Values.persistence.existingPvcName }}
+          {{- end }}
+      {{- else }}
+      - name: data-vol
+        emptyDir:
+          sizeLimit: 128Mi       
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- if eq .Values.database.engine "postgres" }}
+          env:          
+          - name: LD_DB_ENGINE
+            value: postgres
+          {{- range $i, $val := .Values.database.env }}
+          {{- if $val.value }}
+          - name: {{ $val.name | quote }}
+            value: {{ $val.value | quote }}
+          {{- end }}      
+          {{- end }}
+          {{- end }}
+          envFrom:
+          - secretRef:
+              {{- if ne .Values.superUser.existingSecret "" }}
+              name: {{ .Values.superUser.existingSecret }}
+              {{- else }}
+              name: {{ .Release.Name }}
+              {{- end }}          
+          ports:
+          - name: http
+            containerPort: 9090
+            protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /login
+              port: http
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /login
+              port: http
+            periodSeconds: 30
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+          - name: data-vol
+            mountPath: /etc/linkding/data
+

@@ -1,0 +1,120 @@
+metadata:
+  namespace: linkding
+
+image:
+  repository: sissbruecker/linkding
+  tag: 1.34.0-alpine
+  pullPolicy: IfNotPresent
+  # pullSecrets:
+  #   - myRegistrKeySecretName
+
+nameOverride: ""
+fullnameOverride: ""
+podAnnotations: {}
+podLabels: {}
+deploymentAnnotations: {}
+
+# Number of replicas to be deployed
+replicaCount: 1
+
+serviceAccount:
+  create: false
+  name: ""
+
+ingress:
+  enabled: true
+  className: traefik
+  annotations: {}
+    # cert-manager.io/cluster-issuer: letsencrypt-production
+    # cert-manager.io/private-key-secret-name: root-secret
+    # hajimari.io/enable: "true"
+    # hajimari.io/icon: shield-check-outline
+    # traefik.ingress.kubernetes.io/router.entrypoints: websecure
+  #  tls:
+  #    - secretName: adguardhome-tls
+  #      hosts:
+  #        - adguardhome.kube.home
+  hostName: linkding.kube.home
+  labels: {}
+  path: /
+  pathType: Prefix
+
+resources:
+  requests:
+    cpu: 20m
+    memory: 64Mi
+  limits:
+    cpu: 100m
+    memory: 128Mi
+
+# Manage persistent storage
+persistence:
+  enabled: true
+  # Set the name of an existing PVC to use
+  existingPvcName: ""
+  # Set the access mode for the PVC (e.g. ReadWriteOnce, ReadOnlyMany, ReadWriteMany)
+  accessMode: "ReadWriteOnce"
+  # Set the size of the PVC (e.g. 1Gi, 10Gi, 100Gi)
+  storageSize: "1Gi"
+  # Set the storage class for the PVC
+  storageClass: ""
+
+database:
+  # Database engine, can be sqlite (default) or postgres
+  engine: sqlite
+  env:
+    # Database name (default: linkding)
+  - name: LD_DB_DATABASE
+    value: linkding
+    # Username to connect to the database server  (default: linkding)
+  - name: LD_DB_USER
+    value: linkding
+    # Password to connect to the database server
+  - name: LD_DB_PASSWORD
+    value: pass
+    # The hostname where the database is hosted (default: localhost)
+  - name: LD_DB_HOST
+    value: postgres.databse.svc.cluster.local
+    # Port use to connect to the database server
+    # Should use the default port if not set
+  - name: LD_DB_PORT
+    value: 5432
+    # Any additional options to pass to the database (default: {})
+  - name: LD_DB_OPTIONS
+    value: {}
+
+superUser:
+  existingSecret: ""
+  # Username of the initial superuser to create, leave empty to not create one
+  name: ""
+  # Password for the initial superuser, leave empty to disable credentials authentication and rely on proxy authentication instead
+  password: ""
+
+# TODO
+env:
+  values:
+    # Docker container name
+    LD_CONTAINER_NAME: linkding
+    # Port on the host system that the application should be published on
+    LD_HOST_PORT: 9090
+    # Directory on the host system that should be mounted as data dir into the Docker container
+    LD_HOST_DATA_DIR: ./data
+
+    # Can be used to run linkding under a context path, for example: linkding/
+    # Must end with a slash `/`
+    LD_CONTEXT_PATH: 
+    # Option to disable background tasks
+    LD_DISABLE_BACKGROUND_TASKS: False
+    # Option to disable URL validation for bookmarks completely
+    LD_DISABLE_URL_VALIDATION: False
+    # Enables support for authentication proxies such as Authelia
+    LD_ENABLE_AUTH_PROXY: False
+    # Name of the request header that the auth proxy passes to the application to identify the user
+    # See docs/Options.md for more details
+    LD_AUTH_PROXY_USERNAME_HEADER: 
+    # The URL that linkding should redirect to after a logout, when using an auth proxy
+    # See docs/Options.md for more details
+    LD_AUTH_PROXY_LOGOUT_URL: 
+    # List of trusted origins from which to accept POST requests
+    # See docs/Options.md for more details
+    LD_CSRF_TRUSTED_ORIGINS: 
