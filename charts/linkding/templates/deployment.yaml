@@ -69,12 +69,12 @@ spec:
             protocol: TCP
           livenessProbe:
             httpGet:
-              path: /login
+              path: /login/
               port: http
             periodSeconds: 30
           readinessProbe:
             httpGet:
-              path: /login
+              path: /login/
               port: http
             periodSeconds: 30
           resources:
