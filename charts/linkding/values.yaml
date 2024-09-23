@@ -47,6 +47,17 @@ resources:
     cpu: 100m
     memory: 128Mi
 
+livenessProbe: {}
+  # httpGet:
+  #   path: /login/
+  #   port: http
+  # periodSeconds: 30
+readinessProbe: {}
+  # httpGet:
+  #   path: /login/
+  #   port: http
+  # periodSeconds: 30
+
 # Manage persistent storage
 persistence:
   enabled: true

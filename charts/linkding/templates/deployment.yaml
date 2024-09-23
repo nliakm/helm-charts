@@ -67,16 +67,20 @@ spec:
           - name: http
             containerPort: 9090
             protocol: TCP
+          {{- if .Values.livenessProbe }}
           livenessProbe:
             httpGet:
-              path: /login/
+              path: {{ .Values.livenessProbe.httpGet.path }}
               port: http
             periodSeconds: 30
+          {{- end }}
+          {{- if .Values.readinessProbe }}
           readinessProbe:
             httpGet:
-              path: /login/
+              path: {{ .Values.readinessProbe.httpGet.path }}
               port: http
             periodSeconds: 30
+          {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
