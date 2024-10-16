@@ -194,7 +194,6 @@ spec:
               {{- if not .Values.existingPostgres }}
               until nc -zvw10 {{.Release.Name}}-postgres {{ .Values.postgres.service.port }}; do echo "Waiting for postgres service ({{.Release.Name}}-postgres:{{ .Values.postgres.service.port }}) "; sleep 2; done &&
               {{- end }}
-              until wget --spider http://{{.Release.Name}}-http:8000; do echo "Waiting for wger app service ({{.Release.Name}}-http:8000)"; sleep 2; done
       {{- if or (.Values.app.persistence.enabled) (.Values.app.nginx.enabled) }}
       volumes:
         - name: wger-media
