@@ -29,6 +29,7 @@ recipes:
     keyString: ""
     # Name of an existing secret to use for the secret key
     existingSecret: ""
+    existingSecretKey: ""
 
   # hosts the application can run under e.g. recipes.mydomain.com,cooking.mydomain.com,...
   allowedHosts: '*'
