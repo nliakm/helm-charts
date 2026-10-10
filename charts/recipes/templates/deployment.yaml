@@ -30,6 +30,7 @@ spec:
               secretKeyRef:
                 {{- if ne .Values.recipes.secretKey.existingSecret "" }}
                 name: {{ .Values.recipes.secretKey.existingSecret }}
+                key: {{ .Values.recipes.secretKey.existingSecretKey }}
                 {{- else }}
                 name: {{ .Release.Name }}-secret-key
                 key: secret-key
