@@ -147,7 +147,6 @@ spec:
         {{- end }}
         {{- with .Values.recipes.readinessProbe }}
         readinessProbe:
-        livenessProbe:
         {{- toYaml . | nindent 10 }}
         {{- end }}
         {{- with .Values.recipes.resources }}
