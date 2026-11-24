@@ -33,6 +33,8 @@ recipes:
 
   # hosts the application can run under e.g. recipes.mydomain.com,cooking.mydomain.com,...
   allowedHosts: '*'
+  gunicornWorkers: "1"
+  gunicornThreads: "2"
 
   externalDatabase:
     enabled: true
@@ -85,7 +87,7 @@ recipes:
 
   initChmodData:
     # Enable or disable running the init container
-    enabled: true
+    enabled: false
     # Resource requests and limits for initializing the chmod data
     resources: {}
       # requests:
@@ -122,5 +124,5 @@ recipes:
     periodSeconds: 30
 
   securityContext:
-    runAsUser: 65534
-    runAsGroup: 65534
+    runAsUser: 0
+    runAsGroup: 0

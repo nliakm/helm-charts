@@ -130,6 +130,10 @@ spec:
             # mount as subPath due to lost+found on ext4 pvc
             subPath: files
         env:
+          - name: GUNICORN_WORKERS
+            value: {{ .Values.recipes.gunicornWorkers }}
+          - name: GUNICORN_THREADS
+            value: {{ .Values.recipes.gunicornThreads }}
           - name: DEBUG
             value: "0"
           - name: ALLOWED_HOSTS
