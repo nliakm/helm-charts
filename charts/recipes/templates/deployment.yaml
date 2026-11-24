@@ -44,6 +44,7 @@ spec:
             value: {{ .Values.recipes.externalDatabase.host }}
           - name: POSTGRES_DB
             value: {{ .Values.recipes.externalDatabase.database }}
+          {{- end }}
           {{- if .Values.recipes.externalDatabase.existingSecret.enabled }}
           - name: POSTGRES_USER
             valueFrom:
@@ -60,19 +61,6 @@ spec:
             value: {{ .Values.recipes.externalDatabase.user }}
           - name: POSTGRES_PASSWORD
             value: {{ .Values.recipes.externalDatabase.password }}
-          {{- end }}
-          {{- else }}
-          - name: POSTGRES_HOST
-            value: {{ .Release.Name }}-postgresql
-          - name: POSTGRES_USER
-            value: {{ .Values.postgresql.global.postgresql.auth.username }}
-          - name: POSTGRES_DB
-            value: {{ .Values.postgresql.global.postgresql.auth.database }}
-          - name: POSTGRES_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: {{ .Release.Name }}-postgresql
-                key: password
           {{- end }}
         {{- with .Values.recipes.initChmodData.resources }}
         resources:
@@ -103,45 +91,23 @@ spec:
           subPath: files
       {{- end }}
       containers:
-      - name: recipes-nginx
-        image: {{ .Values.recipes.nginx.image.repository }}:{{ .Values.recipes.nginx.image.tag }}
-        imagePullPolicy: {{ .Values.recipes.nginx.image.imagePullPolicy }}
-        ports:
-          - containerPort: 80
-            protocol: TCP
-            name: http
-          - containerPort: 8080
-            protocol: TCP
-            name: gunicorn
-        {{- with .Values.recipes.nginx.resources }}
-        resources:
-        {{- toYaml . | nindent 10 }}
-        {{- end }}
-        volumeMounts:
-          - mountPath: /media
-            name: media
-            subPath: files
-          - mountPath: /static
-            name: static
-            subPath: files
-          - name: nginx-config
-            mountPath: /etc/nginx/nginx.conf
-            subPath: nginx-config
-            readOnly: true
       - name: recipes
         image: {{ .Values.recipes.image.repository }}:{{ .Values.recipes.image.tag }}
         imagePullPolicy: {{ .Values.recipes.image.imagePullPolicy }}
-        command:
-          - /opt/recipes/venv/bin/gunicorn
-          - -b
-          - :8080
-          - --access-logfile
-          - "-"
-          - --error-logfile
-          - "-"
-          - --log-level
-          - INFO
-          - recipes.wsgi
+        ports:
+          - containerPort: 80
+            name: http
+        # command:
+        #   - /opt/recipes/venv/bin/gunicorn
+        #   - -b
+        #   - :8080
+        #   - --access-logfile
+        #   - "-"
+        #   - --error-logfile
+        #   - "-"
+        #   - --log-level
+        #   - INFO
+        #   - recipes.wsgi
         {{- with .Values.recipes.livenessProbe }}
         livenessProbe:
         {{- toYaml . | nindent 10 }}
@@ -187,6 +153,7 @@ spec:
             value: {{ .Values.recipes.externalDatabase.host }}
           - name: POSTGRES_DB
             value: {{ .Values.recipes.externalDatabase.database }}
+          {{- end }}
           {{- if .Values.recipes.externalDatabase.existingSecret.enabled }}
           - name: POSTGRES_USER
             valueFrom:
@@ -203,19 +170,6 @@ spec:
             value: {{ .Values.recipes.externalDatabase.user }}
           - name: POSTGRES_PASSWORD
             value: {{ .Values.recipes.externalDatabase.password }}
-          {{- end }}
-          {{- else }}
-          - name: POSTGRES_HOST
-            value: {{ .Release.Name }}-postgresql
-          - name: POSTGRES_USER
-            value: {{ .Values.postgresql.global.postgresql.auth.username }}
-          - name: POSTGRES_DB
-            value: {{ .Values.postgresql.global.postgresql.auth.database }}
-          - name: POSTGRES_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: {{ .Release.Name }}-postgresql
-                key: password
           {{- end }}
         {{- with .Values.recipes.securityContext }}
         securityContext:
