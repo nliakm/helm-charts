@@ -3,7 +3,7 @@ entries:
   adguard-home:
   - apiVersion: v2
     appVersion: 0.107.43
-    created: "2026-11-24T12:54:27.54733+01:00"
+    created: "2026-11-24T13:05:38.752367+01:00"
     description: Application for managing recipes, planning meals, building shopping
       lists and much much more!
     digest: 2ae88846c383d95bec0ef5a3bb5c516f8ae9538de83584fc8b500d5e006b948b
@@ -14,7 +14,7 @@ entries:
     version: 0.0.6
   - apiVersion: v2
     appVersion: 0.107.43
-    created: "2026-11-24T12:54:27.546118+01:00"
+    created: "2026-11-24T13:05:38.751341+01:00"
     description: Application for managing recipes, planning meals, building shopping
       lists and much much more!
     digest: 3118e9d8dfbad20ea09640b405e62030883c18a853c0f23019d68629f568dcb5
@@ -25,7 +25,7 @@ entries:
     version: 0.0.5
   - apiVersion: v2
     appVersion: 0.107.41
-    created: "2026-11-24T12:54:27.544844+01:00"
+    created: "2026-11-24T13:05:38.74951+01:00"
     description: Application for managing recipes, planning meals, building shopping
       lists and much much more!
     digest: 59b3ec5085ada198d9c27281d6eb6c40f3cd75ba322af868321b9f75f93ea223
@@ -36,7 +36,7 @@ entries:
     version: 0.0.4
   - apiVersion: v2
     appVersion: 0.107.41
-    created: "2026-11-24T12:54:27.543619+01:00"
+    created: "2026-11-24T13:05:38.748541+01:00"
     description: Application for managing recipes, planning meals, building shopping
       lists and much much more!
     digest: 10cdda49e9576ddebd8d4f1b07e87fe481444036a2f97c9447d0f1cf0c14dcfd
@@ -47,7 +47,7 @@ entries:
     version: 0.0.3
   - apiVersion: v2
     appVersion: 0.107.41
-    created: "2026-11-24T12:54:27.542412+01:00"
+    created: "2026-11-24T13:05:38.747532+01:00"
     description: Application for managing recipes, planning meals, building shopping
       lists and much much more!
     digest: deeebc194501ae6b5a92ea53f87e1bcf519a3c383916d3631a7c9356b591792a
@@ -58,7 +58,7 @@ entries:
     version: 0.0.2
   - apiVersion: v2
     appVersion: 0.107.41
-    created: "2026-11-24T12:54:27.540497+01:00"
+    created: "2026-11-24T13:05:38.745976+01:00"
     description: Application for managing recipes, planning meals, building shopping
       lists and much much more!
     digest: 3b885c774594281ed13fe1f7978a94d16ab50dbedc6f8b74883454111c3ead99
@@ -70,7 +70,7 @@ entries:
   linkding:
   - apiVersion: v2
     appVersion: 0.34.0
-    created: "2026-11-24T12:54:27.550201+01:00"
+    created: "2026-11-24T13:05:38.75436+01:00"
     description: linkding is a bookmark manager that you can host yourself. It's designed
       be to be minimal, fast, and easy to set up using Docker.
     digest: 836f7ad280f382666568f5117a4315275cb8211d1cfa816bf87e28832f5322d8
@@ -81,7 +81,7 @@ entries:
     version: 0.0.3
   - apiVersion: v2
     appVersion: 0.34.0
-    created: "2026-11-24T12:54:27.549259+01:00"
+    created: "2026-11-24T13:05:38.753662+01:00"
     description: linkding is a bookmark manager that you can host yourself. It's designed
       be to be minimal, fast, and easy to set up using Docker.
     digest: d566e71aaf86c7816bcfa37c2de24b51bde67a5621f1376f672e17056521e57a
@@ -92,7 +92,7 @@ entries:
     version: 0.0.2
   - apiVersion: v2
     appVersion: 0.34.0
-    created: "2026-11-24T12:54:27.548461+01:00"
+    created: "2026-11-24T13:05:38.753074+01:00"
     description: linkding is a bookmark manager that you can host yourself. It's designed
       be to be minimal, fast, and easy to set up using Docker.
     digest: 10a1082bec578c8afd207b980231fd0421088141af4ff89b7421694640b3f53e
@@ -104,7 +104,7 @@ entries:
   monica:
   - apiVersion: v2
     appVersion: 4.0.0
-    created: "2026-11-24T12:54:27.572894+01:00"
+    created: "2026-11-24T13:05:38.775848+01:00"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -145,7 +145,7 @@ entries:
     version: 1.0.7
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2026-11-24T12:54:27.561244+01:00"
+    created: "2026-11-24T13:05:38.76524+01:00"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -187,7 +187,18 @@ entries:
   recipes:
   - apiVersion: v2
     appVersion: 2.7.7
-    created: "2026-11-24T12:54:27.626376+01:00"
+    created: "2026-11-24T13:05:38.805275+01:00"
+    description: Application for managing recipes, planning meals, building shopping
+      lists and much much more!
+    digest: b0098e56e4185107f877067bc7b4c9cb5b6771309d3e753bbf553d5d57dc3329
+    name: recipes
+    type: application
+    urls:
+    - https://nliakm.github.io/helm-charts/recipes-0.3.1.tgz
+    version: 0.3.1
+  - apiVersion: v2
+    appVersion: 2.7.7
+    created: "2026-11-24T13:05:38.804771+01:00"
     description: Application for managing recipes, planning meals, building shopping
       lists and much much more!
     digest: b20e3c4e09b4b00bed41818af5fa6d349253e6b21af4934bc4f757bb48e1af76
@@ -198,7 +209,7 @@ entries:
     version: 0.3.0
   - apiVersion: v2
     appVersion: 2.6.15
-    created: "2026-11-24T12:54:27.624691+01:00"
+    created: "2026-11-24T13:05:38.80402+01:00"
     dependencies:
     - condition: deployPostgresDatabase
       name: postgresql
@@ -214,7 +225,7 @@ entries:
     version: 0.2.6
   - apiVersion: v2
     appVersion: 2.6.15
-    created: "2026-11-24T12:54:27.620578+01:00"
+    created: "2026-11-24T13:05:38.800568+01:00"
     dependencies:
     - condition: deployPostgresDatabase
       name: postgresql
@@ -230,7 +241,7 @@ entries:
     version: 0.2.5
   - apiVersion: v2
     appVersion: 2.6.15
-    created: "2026-11-24T12:54:27.596608+01:00"
+    created: "2026-11-24T13:05:38.797148+01:00"
     dependencies:
     - condition: deployPostgresDatabase
       name: postgresql
@@ -246,7 +257,7 @@ entries:
     version: 0.2.4
   - apiVersion: v2
     appVersion: 2.3.0
-    created: "2026-11-24T12:54:27.592587+01:00"
+    created: "2026-11-24T13:05:38.793299+01:00"
     dependencies:
     - condition: deployPostgresDatabase
       name: postgresql
@@ -262,7 +273,7 @@ entries:
     version: 0.2.3
   - apiVersion: v2
     appVersion: 1.5.6
-    created: "2026-11-24T12:54:27.588517+01:00"
+    created: "2026-11-24T13:05:38.790016+01:00"
     dependencies:
     - condition: deployPostgresDatabase
       name: postgresql
@@ -278,7 +289,7 @@ entries:
     version: 0.2.2
   - apiVersion: v2
     appVersion: 1.5.6
-    created: "2026-11-24T12:54:27.584844+01:00"
+    created: "2026-11-24T13:05:38.786136+01:00"
     dependencies:
     - condition: recipes.externalDatabase.enabled
       name: postgresql
@@ -294,7 +305,7 @@ entries:
     version: 0.2.1
   - apiVersion: v2
     appVersion: 1.5.6
-    created: "2026-11-24T12:54:27.580558+01:00"
+    created: "2026-11-24T13:05:38.782915+01:00"
     dependencies:
     - name: postgresql
       repository: https://charts.bitnami.com/bitnami
@@ -309,7 +320,7 @@ entries:
     version: 0.2.0
   - apiVersion: v2
     appVersion: 1.4.8
-    created: "2026-11-24T12:54:27.576691+01:00"
+    created: "2026-11-24T13:05:38.779085+01:00"
     dependencies:
     - name: postgresql
       repository: https://charts.bitnami.com/bitnami
@@ -325,7 +336,7 @@ entries:
   wger:
   - apiVersion: v2
     appVersion: latest
-    created: "2026-11-24T12:54:27.640058+01:00"
+    created: "2026-11-24T13:05:38.817231+01:00"
     dependencies:
     - condition: postgres.enabled
       name: postgres
@@ -348,7 +359,7 @@ entries:
     version: 0.0.5
   - apiVersion: v2
     appVersion: latest
-    created: "2026-11-24T12:54:27.637561+01:00"
+    created: "2026-11-24T13:05:38.814934+01:00"
     dependencies:
     - condition: postgres.enabled
       name: postgres
@@ -371,7 +382,7 @@ entries:
     version: 0.0.4
   - apiVersion: v2
     appVersion: latest
-    created: "2026-11-24T12:54:27.634872+01:00"
+    created: "2026-11-24T13:05:38.812189+01:00"
     dependencies:
     - condition: postgres.enabled
       name: postgres
@@ -394,7 +405,7 @@ entries:
     version: 0.0.3
   - apiVersion: v2
     appVersion: latest
-    created: "2026-11-24T12:54:27.63167+01:00"
+    created: "2026-11-24T13:05:38.810023+01:00"
     dependencies:
     - condition: postgres.enabled
       name: postgres
@@ -417,7 +428,7 @@ entries:
     version: 0.0.2
   - apiVersion: v2
     appVersion: latest
-    created: "2026-11-24T12:54:27.62913+01:00"
+    created: "2026-11-24T13:05:38.807562+01:00"
     dependencies:
     - condition: postgres.enabled
       name: postgres
@@ -442,4 +453,4 @@ entries:
     urls:
     - https://nliakm.github.io/helm-charts/wger-0.0.1.tgz
     version: 0.0.1
-generated: "2026-11-24T12:54:27.538778+01:00"
+generated: "2026-11-24T13:05:38.744102+01:00"

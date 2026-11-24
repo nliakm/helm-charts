@@ -114,10 +114,10 @@ recipes:
       # Path to hit for the readiness probe
       path: /
       # Port to use for the readiness probe
-      port: 8080
+      port: http
       # Protocol to use for the readiness probe
       # Options: HTTP, HTTPS
-      scheme: http
+      scheme: HTTP
     # Time interval in seconds between readiness probes
     periodSeconds: 30
 
